@@ -1,6 +1,6 @@
 # C# Backend Project
 
-This is a very small ASP.NET Core backend starter project.
+This is a very small ASP.NET Core backend starter project since I switched from Node.js and TypeScript to C# and .NET. 
 
 It does two things:
 
