@@ -1,2 +1,5 @@
 bin/
 obj/
+frontend/.angular/
+frontend/node_modules/
+frontend/dist/

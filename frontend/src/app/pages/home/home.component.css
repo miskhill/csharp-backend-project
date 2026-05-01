@@ -1,0 +1,172 @@
+:host {
+  display: block;
+}
+
+.home-page {
+  min-height: 100vh;
+  padding: 48px 24px 64px;
+  color: #f4f7fb;
+}
+
+.hero-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 420px);
+  gap: 24px;
+  align-items: stretch;
+  max-width: 1180px;
+  margin: 0 auto 24px;
+}
+
+.hero-copy,
+.status-card,
+.learning-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(180deg, rgba(17, 25, 40, 0.9), rgba(10, 15, 28, 0.92)),
+    rgba(11, 17, 30, 0.8);
+  backdrop-filter: blur(18px);
+  border-radius: 28px;
+}
+
+.hero-copy {
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-copy::after {
+  content: '';
+  position: absolute;
+  inset: auto -80px -80px auto;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.45), transparent 68%);
+}
+
+.eyebrow,
+.card-label {
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.76rem;
+  color: #8bd3ff;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+}
+
+h1 {
+  margin: 0 0 20px;
+  font-size: clamp(2.6rem, 5vw, 4.7rem);
+  line-height: 0.95;
+  max-width: 10ch;
+}
+
+.intro,
+.status-message,
+.status-detail,
+.status-note,
+.learning-card p,
+.loading-state p,
+.status-error p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(244, 247, 251, 0.82);
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.status-card {
+  padding: 28px;
+}
+
+.status-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.status-header h2,
+.learning-card h3 {
+  margin: 0;
+}
+
+.status-header mat-icon,
+.learning-card mat-icon {
+  width: 40px;
+  height: 40px;
+  font-size: 40px;
+  color: #8bd3ff;
+}
+
+.loading-state,
+.status-error {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.status-success {
+  margin-top: 24px;
+}
+
+.status-message {
+  margin: 16px 0 12px;
+  font-size: 1.08rem;
+  color: #ffffff;
+}
+
+.status-detail,
+.status-note {
+  margin: 0 0 10px;
+}
+
+.learning-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.learning-card {
+  padding: 28px;
+}
+
+.learning-card p {
+  margin: 18px 0 0;
+}
+
+code {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(139, 211, 255, 0.16);
+  color: #d8f3ff;
+}
+
+@media (max-width: 960px) {
+  .hero-section,
+  .learning-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-page {
+    padding: 24px 16px 48px;
+  }
+
+  .hero-copy,
+  .status-card,
+  .learning-card {
+    padding: 24px;
+  }
+}

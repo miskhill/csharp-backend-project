@@ -1,0 +1,88 @@
+<main class="home-page">
+  <section class="hero-section">
+    <div class="hero-copy">
+      <p class="eyebrow">Angular + ASP.NET Core</p>
+      <h1>Learn the frontend without losing sight of the backend.</h1>
+      <p class="intro">
+        This starter home page shows how an Angular screen can call your C# API,
+        display live data, and stay organized with a small service and a typed model.
+      </p>
+
+      <div class="hero-actions">
+        <a
+          mat-flat-button
+          color="primary"
+          href="https://angular.dev/tutorials/learn-angular"
+          target="_blank"
+          rel="noreferrer">
+          Start Angular Tutorial
+        </a>
+
+        <a
+          mat-stroked-button
+          href="http://localhost:5050/api/status"
+          target="_blank"
+          rel="noreferrer">
+          Open Backend Endpoint
+        </a>
+      </div>
+    </div>
+
+    <mat-card class="status-card appearance-elevated">
+      <div class="status-header">
+        <div>
+          <p class="card-label">Backend Connection</p>
+          <h2>Live status from the C# API</h2>
+        </div>
+        <mat-icon>lan</mat-icon>
+      </div>
+
+      <div *ngIf="isLoading" class="loading-state">
+        <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+        <p>Checking whether the backend is running...</p>
+      </div>
+
+      <div *ngIf="!isLoading && backendStatus" class="status-success">
+        <mat-chip-set>
+          <mat-chip highlighted color="primary">{{ backendStatus.status | titlecase }}</mat-chip>
+        </mat-chip-set>
+
+        <p class="status-message">{{ backendStatus.message }}</p>
+        <p class="status-detail">Server URL: {{ backendStatus.serverUrl }}</p>
+        <p class="status-note">{{ backendStatus.learningNote }}</p>
+      </div>
+
+      <div *ngIf="!isLoading && errorMessage" class="status-error">
+        <mat-icon>error</mat-icon>
+        <p>{{ errorMessage }}</p>
+      </div>
+    </mat-card>
+  </section>
+
+  <section class="learning-grid">
+    <mat-card class="learning-card appearance-elevated">
+      <mat-icon>account_tree</mat-icon>
+      <h3>Simple structure</h3>
+      <p>
+        The route loads one home component, and that component asks a service for data.
+        This keeps each file focused on one job.
+      </p>
+    </mat-card>
+
+    <mat-card class="learning-card appearance-elevated">
+      <mat-icon>sync_alt</mat-icon>
+      <h3>Real API link</h3>
+      <p>
+        The Angular app calls <code>/api/status</code>, which is proxied to the backend on port 5050 during development.
+      </p>
+    </mat-card>
+
+    <mat-card class="learning-card appearance-elevated">
+      <mat-icon>palette</mat-icon>
+      <h3>Component library</h3>
+      <p>
+        Angular Material gives you buttons, cards, icons, and layout building blocks without hiding how Angular works.
+      </p>
+    </mat-card>
+  </section>
+</main>
