@@ -1,5 +1,9 @@
 /* Global styles set the overall look so individual components can stay focused on structure. */
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100%;
@@ -9,7 +13,7 @@ body {
   margin: 0;
   font-family: 'Manrope', 'Segoe UI', sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 28%),
-    radial-gradient(circle at top right, rgba(45, 212, 191, 0.18), transparent 24%),
-    linear-gradient(180deg, #07111f 0%, #091528 44%, #040913 100%);
+    radial-gradient(circle at top left, rgba(167, 201, 87, 0.24), transparent 28%),
+    radial-gradient(circle at top right, rgba(242, 193, 78, 0.18), transparent 24%),
+    linear-gradient(180deg, #f8f3e7 0%, #efe7d5 58%, #e3dac3 100%);
 }

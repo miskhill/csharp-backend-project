@@ -1,87 +1,172 @@
-<main class="home-page">
-  <section class="hero-section">
-    <div class="hero-copy">
-      <p class="eyebrow">Angular + ASP.NET Core</p>
-      <h1>Learning the frontend without losing sight of the backend.</h1>
-      <p class="intro">
-   Linking the Angular frontend to the C# backend.
-      </p>
-
-      <div class="hero-actions">
-        <a
-          mat-flat-button
-          color="primary"
-          href="https://angular.dev/tutorials/learn-angular"
-          target="_blank"
-          rel="noreferrer">
-          Start Angular Tutorial
-        </a>
-
-        <a
-          mat-stroked-button
-          href="http://localhost:5050/api/status"
-          target="_blank"
-          rel="noreferrer">
-          Open Backend Endpoint
-        </a>
-      </div>
-    </div>
-
-    <mat-card class="status-card appearance-elevated">
-      <div class="status-header">
-        <div>
-          <p class="card-label">Backend Connection</p>
-          <h2>Live status from the C# API</h2>
-        </div>
-        <mat-icon>lan</mat-icon>
-      </div>
-
-      <div *ngIf="isLoading" class="loading-state">
-        <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
-        <p>Checking whether the backend is running...</p>
-      </div>
-
-      <div *ngIf="!isLoading && backendStatus" class="status-success">
-        <mat-chip-set>
-          <mat-chip highlighted color="primary">{{ backendStatus.status | titlecase }}</mat-chip>
-        </mat-chip-set>
-
-        <p class="status-message">{{ backendStatus.message }}</p>
-        <p class="status-detail">Server URL: {{ backendStatus.serverUrl }}</p>
-        <p class="status-note">{{ backendStatus.learningNote }}</p>
-      </div>
-
-      <div *ngIf="!isLoading && errorMessage" class="status-error">
-        <mat-icon>error</mat-icon>
-        <p>{{ errorMessage }}</p>
+<main class="dashboard-page">
+  <section *ngIf="isLoading" class="state-shell">
+    <mat-card class="state-card">
+      <mat-progress-spinner diameter="44" mode="indeterminate"></mat-progress-spinner>
+      <div>
+        <p class="state-label">Loading dashboard</p>
+        <h1>Preparing the agriculture metrics</h1>
+        <p>
+          The Angular page is waiting for the ASP.NET Core backend to return the demo data.
+        </p>
       </div>
     </mat-card>
   </section>
 
-  <section class="learning-grid">
-    <mat-card class="learning-card appearance-elevated">
-      <mat-icon>account_tree</mat-icon>
-      <h3>Simple structure</h3>
-      <p>
-        The route loads one home component, and that component asks a service for data.
-        This keeps each file focused on one job.
-      </p>
+  <section *ngIf="!isLoading && errorMessage" class="state-shell">
+    <mat-card class="state-card error-card">
+      <mat-icon>cloud_off</mat-icon>
+      <div>
+        <p class="state-label">Backend unavailable</p>
+        <h1>Dashboard data could not be loaded</h1>
+        <p>{{ errorMessage }}</p>
+        <a mat-flat-button href="http://localhost:5050/api/dashboard" target="_blank" rel="noreferrer">
+          Open dashboard JSON
+        </a>
+      </div>
     </mat-card>
+  </section>
 
-    <mat-card class="learning-card appearance-elevated">
-      <mat-icon>sync_alt</mat-icon>
-      <h3>Real API link</h3>
-      <p>
-        The Angular app calls <code>/api/status</code>, which is proxied to the backend on port 5050 during development.
-      </p>
-    </mat-card>
+  <section *ngIf="!isLoading && dashboard" class="dashboard-shell">
+    <header class="hero-card">
+      <div class="hero-copy">
+        <p class="eyebrow">Angular + ASP.NET Core analytics demo</p>
+        <h1>{{ dashboard.title }}</h1>
+        <p class="intro">{{ dashboard.subtitle }}</p>
+      </div>
 
-    <mat-card class="learning-card appearance-elevated">
-      <mat-icon>palette</mat-icon>
-      <h3>Component library</h3>
-      <p>
-        Angular Material gives you buttons, cards, icons, and layout building blocks without hiding how Angular works.
-      </p>
-    </mat-card>
+      <div class="hero-actions">
+        <a mat-flat-button color="primary" href="http://localhost:5050/api/dashboard" target="_blank" rel="noreferrer">
+          View /api/dashboard
+        </a>
+        <a mat-stroked-button href="http://localhost:5050/api/status" target="_blank" rel="noreferrer">
+          View /api/status
+        </a>
+      </div>
+    </header>
+
+    <section class="summary-grid">
+      <mat-card
+        *ngFor="let metric of dashboard.summaryMetrics; trackBy: trackByMetricId"
+        class="summary-card">
+        <p class="metric-label">{{ metric.label }}</p>
+        <div class="metric-row">
+          <h2>{{ formatMetricValue(metric) }}</h2>
+          <span class="trend-pill" [ngClass]="metricTrendClass(metric)">
+            <mat-icon>{{ metricTrendIcon(metric) }}</mat-icon>
+            {{ metric.changeText }}
+          </span>
+        </div>
+      </mat-card>
+    </section>
+
+    <section class="visual-grid">
+      <mat-card class="panel-card chart-card">
+        <div class="panel-header">
+          <div>
+            <p class="panel-label">Weekly activity</p>
+            <h2>Usage across the last 7 days</h2>
+          </div>
+          <mat-icon>stacked_bar_chart</mat-icon>
+        </div>
+
+        <div class="chart-shell">
+          <canvas
+            baseChart
+            [data]="weeklyUsageChartData"
+            [options]="weeklyUsageChartOptions"
+            [type]="'bar'"></canvas>
+        </div>
+      </mat-card>
+
+      <mat-card class="panel-card crop-card">
+        <div class="panel-header">
+          <div>
+            <p class="panel-label">Land allocation</p>
+            <h2>Crop mix by hectares</h2>
+          </div>
+          <mat-icon>pie_chart</mat-icon>
+        </div>
+
+        <div class="crop-layout">
+          <div class="doughnut-shell">
+            <canvas
+              baseChart
+              [data]="cropDistributionChartData"
+              [options]="cropDistributionChartOptions"
+              [type]="'doughnut'"></canvas>
+            <div class="doughnut-centre">
+              <span>Total land</span>
+              <strong>{{ totalHectares(dashboard.cropDistribution) }} ha</strong>
+            </div>
+          </div>
+
+          <div class="crop-legend">
+            <article
+              *ngFor="let crop of dashboard.cropDistribution; trackBy: trackByCrop"
+              class="legend-row">
+              <span class="legend-swatch" [style.background]="crop.color"></span>
+              <div>
+                <p>{{ crop.crop }}</p>
+                <span>{{ crop.hectares }} hectares</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </mat-card>
+    </section>
+
+    <section class="insights-grid">
+      <mat-card class="panel-card insights-card">
+        <div class="panel-header">
+          <div>
+            <p class="panel-label">Field insights</p>
+            <h2>Recent conditions worth monitoring</h2>
+          </div>
+          <mat-icon>agriculture</mat-icon>
+        </div>
+
+        <div class="field-list">
+          <article
+            *ngFor="let field of dashboard.fieldInsights; trackBy: trackByField"
+            class="field-card">
+            <div class="field-top-row">
+              <div>
+                <h3>{{ field.fieldName }}</h3>
+                <p>{{ field.crop }}</p>
+              </div>
+              <span class="field-status" [ngClass]="fieldStatusClass(field)">{{ field.status }}</span>
+            </div>
+
+            <div class="field-metrics">
+              <div>
+                <span class="field-metric-label">Soil moisture</span>
+                <strong>{{ field.moisturePercent }}%</strong>
+              </div>
+              <div>
+                <span class="field-metric-label">Last tested</span>
+                <strong>{{ field.lastTested | date: 'd MMM y' }}</strong>
+              </div>
+            </div>
+          </article>
+        </div>
+      </mat-card>
+
+      <mat-card class="panel-card status-card">
+        <div class="panel-header">
+          <div>
+            <p class="panel-label">Backend connection</p>
+            <h2>Live status from the C# API</h2>
+          </div>
+          <mat-icon>lan</mat-icon>
+        </div>
+
+        <div *ngIf="backendStatus" class="status-body">
+          <span class="status-badge">{{ backendStatus.status | titlecase }}</span>
+          <p class="status-message">{{ backendStatus.message }}</p>
+          <p class="status-detail">Server URL: {{ backendStatus.serverUrl }}</p>
+          <p class="status-note">{{ backendStatus.learningNote }}</p>
+        </div>
+      </mat-card>
+    </section>
   </section>
 </main>
