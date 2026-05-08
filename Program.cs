@@ -9,6 +9,7 @@ public static class Program
     private const string FrontendCorsPolicyName = "FrontendDevelopment";
     private const string RailwayPortEnvironmentVariableName = "PORT";
     private const string RailwayPublicDomainEnvironmentVariableName = "RAILWAY_PUBLIC_DOMAIN";
+    private const string FrontendUrlsEnvironmentVariableName = "FRONTEND_URLS";
 
     /// <summary>
     /// Starts the backend server.
@@ -43,7 +44,7 @@ public static class Program
         options.AddPolicy(
             FrontendCorsPolicyName,
             policy => policy
-                .WithOrigins(AngularDevServerUrl)
+                .WithOrigins(GetAllowedFrontendOrigins())
                 .AllowAnyHeader()
                 .AllowAnyMethod());
     }
@@ -98,6 +99,20 @@ public static class Program
         return string.IsNullOrWhiteSpace(railwayPublicDomain)
             ? LocalhostUrl
             : $"https://{railwayPublicDomain}";
+    }
+
+    /// <summary>
+    /// Allows localhost in development and extra deployed frontend origins when provided through environment variables.
+    /// </summary>
+    private static string[] GetAllowedFrontendOrigins()
+    {
+        var configuredOrigins = Environment.GetEnvironmentVariable(FrontendUrlsEnvironmentVariableName);
+        var additionalOrigins = string.IsNullOrWhiteSpace(configuredOrigins)
+            ? []
+            : configuredOrigins
+                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        return [AngularDevServerUrl, .. additionalOrigins];
     }
 
     /// <summary>

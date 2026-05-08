@@ -19,7 +19,7 @@
         <p class="state-label">Backend unavailable</p>
         <h1>Dashboard data could not be loaded</h1>
         <p>{{ errorMessage }}</p>
-        <a mat-flat-button href="http://localhost:5050/api/dashboard" target="_blank" rel="noreferrer">
+        <a mat-flat-button [href]="dashboardJsonUrl" target="_blank" rel="noreferrer">
           Open dashboard JSON
         </a>
       </div>
@@ -36,10 +36,10 @@
         </div>
 
         <div class="hero-actions">
-          <a mat-flat-button color="primary" href="http://localhost:5050/api/dashboard" target="_blank" rel="noreferrer">
+          <a mat-flat-button color="primary" [href]="dashboardJsonUrl" target="_blank" rel="noreferrer">
             View /api/dashboard
           </a>
-          <a mat-stroked-button href="http://localhost:5050/api/status" target="_blank" rel="noreferrer">
+          <a mat-stroked-button [href]="statusJsonUrl" target="_blank" rel="noreferrer">
             View /api/status
           </a>
         </div>

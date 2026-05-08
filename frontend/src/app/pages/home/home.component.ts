@@ -13,6 +13,7 @@ import { AgricultureDashboard, CropDistributionItem, DashboardSummaryMetric, Fie
 import { BackendStatus } from '../../models/backend-status';
 import { BackendStatusService } from '../../services/backend-status.service';
 import { DashboardService } from '../../services/dashboard.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -32,6 +33,8 @@ export class HomeComponent implements OnInit {
   protected backendStatus?: BackendStatus;
   protected errorMessage = '';
   protected isLoading = true;
+  protected readonly dashboardJsonUrl = `${environment.backendBaseUrl}/api/dashboard`;
+  protected readonly statusJsonUrl = `${environment.backendBaseUrl}/api/status`;
   protected weeklyUsageChartData: ChartData<'bar'> = {
     labels: [],
     datasets: []
@@ -105,7 +108,7 @@ export class HomeComponent implements OnInit {
       },
       error: () => {
         this.errorMessage =
-          'The frontend started, but it could not load the dashboard API. Make sure dotnet run is still running on port 5050.';
+          `The frontend started, but it could not load the dashboard API. Make sure the backend is reachable at ${this.dashboardJsonUrl}.`;
         this.isLoading = false;
       }
     });
