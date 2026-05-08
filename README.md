@@ -80,6 +80,15 @@ Right now that file points to:
 
 - `https://csharp-backend-project-production.up.railway.app`
 
+The backend CORS policy now allows:
+
+- `http://localhost:4200` for local Angular development
+- `https://angularagridash.netlify.app` for the current Netlify production site
+
+If you later add a custom frontend domain or a Netlify preview URL, you can add extra allowed frontend origins on the backend host with:
+
+- `FRONTEND_URLS=https://your-other-frontend-url.com,https://another-frontend-url.com`
+
 ## Do I need Netlify environment variables?
 
 Not for the current setup.

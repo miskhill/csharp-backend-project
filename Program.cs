@@ -6,6 +6,7 @@ public static class Program
 {
     private const string LocalhostUrl = "http://localhost:5050";
     private const string AngularDevServerUrl = "http://localhost:4200";
+    private const string NetlifyFrontendUrl = "https://angularagridash.netlify.app";
     private const string FrontendCorsPolicyName = "FrontendDevelopment";
     private const string RailwayPortEnvironmentVariableName = "PORT";
     private const string RailwayPublicDomainEnvironmentVariableName = "RAILWAY_PUBLIC_DOMAIN";
@@ -102,7 +103,7 @@ public static class Program
     }
 
     /// <summary>
-    /// Allows localhost in development and extra deployed frontend origins when provided through environment variables.
+    /// Allows localhost in development, the current Netlify site, and any extra frontend origins provided through environment variables.
     /// </summary>
     private static string[] GetAllowedFrontendOrigins()
     {
@@ -112,7 +113,7 @@ public static class Program
             : configuredOrigins
                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-        return [AngularDevServerUrl, .. additionalOrigins];
+        return [AngularDevServerUrl, NetlifyFrontendUrl, .. additionalOrigins];
     }
 
     /// <summary>
