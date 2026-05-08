@@ -55,10 +55,44 @@ npm start
 
 Then open `http://localhost:4200`.
 
+## Host the frontend on Netlify
+
+This project can be split across two hosts:
+
+- the Angular frontend can be deployed to Netlify
+- the ASP.NET Core backend can stay on Railway
+
+The repo now includes a root `netlify.toml`, so Netlify can read the settings automatically.
+
+If you want to enter the values manually in Netlify, use:
+
+- Branch to deploy: `main`
+- Base directory: `frontend`
+- Build command: `npm run build`
+- Publish directory: `dist/frontend`
+- Functions directory: leave blank
+
+The frontend is configured to call the production backend from:
+
+- `frontend/src/environments/environment.production.ts`
+
+Right now that file points to:
+
+- `https://csharp-backend-project-production.up.railway.app`
+
+## Do I need Netlify environment variables?
+
+Not for the current setup.
+
+The production API URL is already committed in `frontend/src/environments/environment.production.ts`, so Netlify does not need any extra environment variables just to build and run this frontend.
+
+You would only need Netlify environment variables later if you want to stop hardcoding the backend URL in the repo and make it configurable per deployment instead.
+
 ## Project files
 
 - `Program.cs` contains the backend setup, the sample route, the API route, and CORS for the Angular dev server
 - `AgricultureDashboardResponse.cs` contains the typed response models for the dashboard endpoint
+- `netlify.toml` contains the Netlify build settings and SPA redirect
 - `frontend/src/app/pages/home` contains the first Angular home page
 - `frontend/src/app/services/dashboard.service.ts` contains the dashboard API call
 - `frontend/src/app/models/agriculture-dashboard.ts` contains the TypeScript interfaces for the dashboard response
