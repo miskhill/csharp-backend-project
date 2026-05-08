@@ -7,6 +7,8 @@ public static class Program
     private const string LocalhostUrl = "http://localhost:5050";
     private const string AngularDevServerUrl = "http://localhost:4200";
     private const string FrontendCorsPolicyName = "FrontendDevelopment";
+    private const string RailwayPortEnvironmentVariableName = "PORT";
+    private const string RailwayPublicDomainEnvironmentVariableName = "RAILWAY_PUBLIC_DOMAIN";
 
     /// <summary>
     /// Starts the backend server.
@@ -23,7 +25,7 @@ public static class Program
     private static WebApplication BuildApplication(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.WebHost.UseUrls(LocalhostUrl);
+        builder.WebHost.UseUrls(GetListenUrl());
         builder.Services.AddCors(ConfigureCorsPolicies);
 
         var app = builder.Build();
@@ -61,7 +63,7 @@ public static class Program
     /// </summary>
     private static string HandleHomeRequest()
     {
-        return $"C# backend server is running on {LocalhostUrl}.";
+        return $"C# backend server is running on {GetDisplayUrl()}.";
     }
 
     /// <summary>
@@ -72,8 +74,30 @@ public static class Program
         return new BackendStatusResponse(
             Status: "online",
             Message: "C# backend server is running.",
-            ServerUrl: LocalhostUrl,
+            ServerUrl: GetDisplayUrl(),
             LearningNote: "Angular reads this endpoint to prove the frontend and backend are linked.");
+    }
+
+    /// <summary>
+    /// Uses Railway's assigned port in production, while keeping localhost for local development.
+    /// </summary>
+    private static string GetListenUrl()
+    {
+        var railwayPort = Environment.GetEnvironmentVariable(RailwayPortEnvironmentVariableName);
+        return string.IsNullOrWhiteSpace(railwayPort)
+            ? LocalhostUrl
+            : $"http://0.0.0.0:{railwayPort}";
+    }
+
+    /// <summary>
+    /// Prefers Railway's public domain for display text so production responses don't advertise localhost.
+    /// </summary>
+    private static string GetDisplayUrl()
+    {
+        var railwayPublicDomain = Environment.GetEnvironmentVariable(RailwayPublicDomainEnvironmentVariableName);
+        return string.IsNullOrWhiteSpace(railwayPublicDomain)
+            ? LocalhostUrl
+            : $"https://{railwayPublicDomain}";
     }
 
     /// <summary>
