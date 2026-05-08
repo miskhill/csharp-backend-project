@@ -28,17 +28,25 @@
   grid-template-columns: minmax(0, 1.5fr) minmax(260px, 360px);
   gap: 24px;
   padding: 36px;
-  margin-bottom: 24px;
   background:
     radial-gradient(circle at top right, rgba(242, 193, 78, 0.28), transparent 26%),
     radial-gradient(circle at bottom left, rgba(106, 153, 78, 0.24), transparent 22%),
     linear-gradient(135deg, rgba(255, 252, 244, 0.96), rgba(245, 238, 219, 0.95));
 }
 
+.top-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.95fr);
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: stretch;
+}
+
 .hero-copy {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
 }
 
 .eyebrow,
@@ -93,11 +101,14 @@ h3 {
   gap: 12px;
 }
 
+.hero-actions a {
+  min-width: 0;
+}
+
 .summary-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
-  margin-bottom: 20px;
 }
 
 .summary-card,
@@ -108,6 +119,7 @@ h3 {
 
 .summary-card {
   padding: 24px;
+  min-height: 100%;
 }
 
 .metric-row {
@@ -115,6 +127,8 @@ h3 {
   flex-direction: column;
   gap: 16px;
   margin-top: 14px;
+  min-height: calc(100% - 28px);
+  justify-content: space-between;
 }
 
 .metric-row h2 {
@@ -126,6 +140,7 @@ h3 {
 .status-badge,
 .field-status {
   width: fit-content;
+  max-width: 100%;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -133,6 +148,7 @@ h3 {
   border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 700;
+  flex-wrap: wrap;
 }
 
 .trend-pill mat-icon {
@@ -181,6 +197,10 @@ h3 {
   align-items: start;
   gap: 12px;
   margin-bottom: 24px;
+}
+
+.panel-header > div {
+  min-width: 0;
 }
 
 .panel-header mat-icon {
@@ -247,6 +267,10 @@ h3 {
   padding: 14px 16px;
 }
 
+.legend-row > div {
+  min-width: 0;
+}
+
 .legend-row p {
   margin: 0 0 4px;
   font-weight: 700;
@@ -273,6 +297,10 @@ h3 {
 .field-top-row {
   align-items: start;
   margin-bottom: 18px;
+}
+
+.field-top-row > div {
+  min-width: 0;
 }
 
 .field-top-row p {
@@ -357,7 +385,14 @@ h3 {
 }
 
 @media (max-width: 1080px) {
-  .summary-grid,
+  .top-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .visual-grid,
   .insights-grid,
   .crop-layout,
@@ -383,14 +418,93 @@ h3 {
     grid-template-columns: 1fr;
   }
 
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .hero-actions a {
+    width: 100%;
+  }
+
+  .panel-header {
+    flex-direction: column;
+  }
+
+  .panel-header mat-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+  }
+
+  .legend-row,
   .field-top-row,
   .field-metrics,
   .state-card {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .field-status,
+  .trend-pill,
+  .status-badge {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .legend-swatch {
+    width: 100%;
+    height: 12px;
   }
 
   .chart-shell,
   .doughnut-shell {
-    height: 260px;
+    height: 240px;
+  }
+
+  .doughnut-centre strong {
+    font-size: 1.55rem;
+  }
+
+  .field-metrics div {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-page {
+    padding: 14px 10px 28px;
+  }
+
+  .hero-card,
+  .panel-card,
+  .summary-card,
+  .state-card {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  h1 {
+    font-size: clamp(2.1rem, 12vw, 2.8rem);
+    max-width: 100%;
+  }
+
+  .intro,
+  .status-message,
+  .status-detail,
+  .status-note,
+  .state-card p,
+  .legend-row span,
+  .field-card p {
+    font-size: 0.94rem;
+  }
+
+  .metric-row h2 {
+    font-size: 1.8rem;
+  }
+
+  .chart-shell,
+  .doughnut-shell {
+    height: 210px;
   }
 }
